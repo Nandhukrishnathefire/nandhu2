@@ -1,7 +1,868 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecorateMe - Home Decoration Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== Global Styles ===== */
+        :root {
+            --primary-color: #5d4037;
+            --secondary-color: #8d6e63;
+            --accent-color: #a1887f;
+            --light-color: #d7ccc8;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --white: #ffffff;
+            --success-color: #43a047;
+            --warning-color: #fb8c00;
+            --error-color: #e53935;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--light-color);
+            font-weight: 300;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--light-color);
+        }
+
+        nav ul li a i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        /* ===== Card Styles ===== */
+        .card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-color);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .card-icon {
+            background-color: var(--light-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        /* ===== Projects Section ===== */
+        .project-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--light-color);
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .project-color {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .project-info {
+            flex-grow: 1;
+        }
+
+        .project-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .project-info p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* ===== Budget Section ===== */
+        .budget-summary {
+            margin-bottom: 20px;
+        }
+
+        .budget-summary h3 {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .budget-summary h3:last-child {
+            margin-bottom: 0;
+        }
+
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .budget-category {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .budget-amount {
+            font-weight: 600;
+        }
+
+        .over-budget {
+            color: var(--error-color);
+        }
+
+        .under-budget {
+            color: var(--success-color);
+        }
+
+        .on-budget {
+            color: var(--warning-color);
+        }
+
+        /* ===== Design Ideas Section ===== */
+        .design-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .design-item {
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .design-item:hover {
+            transform: scale(1.05);
+        }
+
+        .design-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .design-item:hover::after {
+            opacity: 1;
+        }
+
+        /* ===== Tasks Section ===== */
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .task-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .task-item label {
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .task-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        /* ===== Expenses Section ===== */
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--light-color);
+        }
+
+        .expense-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .expense-detail h3 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .expense-detail p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .expense-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* ===== Contractors Section ===== */
+        .contractor-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--light-color);
+        }
+
+        .contractor-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .contractor-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .contractor-info {
+            flex-grow: 1;
+        }
+
+        .contractor-info h3 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .contractor-info p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .contractor-rating i {
+            font-size: 0.9rem;
+            color: #ffb74d;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 40px 0 30px;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            margin: 0 15px 10px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--light-color);
+        }
+
+        .social-icons {
+            margin-bottom: 25px;
+        }
+
+        .social-icons a {
+            color: var(--white);
+            margin: 0 12px;
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            color: var(--light-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 0 10px 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .design-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .design-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul li {
+                margin: 0 5px 10px;
+            }
+
+            nav ul li a span {
+                display: none;
+            }
+
+            nav ul li a i {
+                margin-right: 0;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
 <body>
-<h1>nandhul</h1>
+    <header>
+        <div class="container header-container">
+            <div class="logo">Decorate<span>Me</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#"><i class="fas fa-paint-roller"></i> <span>Projects</span></a></li>
+                    <li><a href="#"><i class="fas fa-palette"></i> <span>Design</span></a></li>
+                    <li><a href="#"><i class="fas fa-calculator"></i> <span>Budget</span></a></li>
+                    <li><a href="#"><i class="fas fa-user-tie"></i> <span>Contractors</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="main-content">
+        <div class="container">
+            <h1>Welcome back, Sarah!</h1>
+            <p class="subtitle">Manage your home decoration projects in one place</p>
+            
+            <div class="dashboard">
+                <!-- Active Projects Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Active Projects</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-color" style="background-color: #8e24aa;"></div>
+                        <div class="project-info">
+                            <h3>Living Room Makeover</h3>
+                            <p>Started: 15 May 2023</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-color" style="background-color: #3949ab;"></div>
+                        <div class="project-info">
+                            <h3>Kitchen Renovation</h3>
+                            <p>Started: 1 June 2023</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 30%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-color" style="background-color: #039be5;"></div>
+                        <div class="project-info">
+                            <h3>Master Bedroom</h3>
+                            <p>Planning phase</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 10%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn">
+                            <i class="fas fa-plus"></i> Add New Project
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Budget Overview Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Budget Overview</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                    </div>
+                    <div class="budget-summary">
+                        <h3>Total Budget: <span style="float: right;">$15,000</span></h3>
+                        <h3>Spent: <span style="float: right;">$8,250</span></h3>
+                        <h3>Remaining: <span style="float: right; color: var(--success-color);">$6,750</span></h3>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-category">Furniture</span>
+                        <span class="budget-amount on-budget">$3,200 / $4,000</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%;"></div>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-category">Materials</span>
+                        <span class="budget-amount under-budget">$2,500 / $3,500</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 71%;"></div>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-category">Labor</span>
+                        <span class="budget-amount over-budget">$2,550 / $2,000</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 100%; background-color: var(--error-color);"></div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn">
+                            <i class="fas fa-plus"></i> Add Expense
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Design Ideas Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Design Ideas</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                    </div>
+                    <div class="design-grid">
+                        <div class="design-item" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW50ZXJpb3IlMjBkZXNpZ258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60');"></div>
+                        <div class="design-item" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aW50ZXJpb3IlMjBkZXNpZ258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60');"></div>
+                        <div class="design-item" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGludGVyaW9yJTIwZGVzaWdufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60');"></div>
+                        <div class="design-item" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGludGVyaW9yJTIwZGVzaWdufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60');"></div>
+                        <div class="design-item" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGludGVyaW9yJTIwZGVzaWdufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60');"></div>
+                        <div class="design-item" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aW50ZXJpb3IlMjBkZXNpZ258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60');"></div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn">
+                            <i class="fas fa-search"></i> Browse More Ideas
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Tasks Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Upcoming Tasks</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task1">
+                        <label for="task1">Meet with interior designer - June 15</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task2">
+                        <label for="task2">Order living room furniture - June 18</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task3">
+                        <label for="task3">Finalize paint colors - June 20</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task4">
+                        <label for="task4">Schedule electrician - June 22</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task5">
+                        <label for="task5">Purchase kitchen backsplash tiles - June 25</label>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn">
+                            <i class="fas fa-plus"></i> Add New Task
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Recent Expenses Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Expenses</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                    </div>
+                    <div class="expense-item">
+                        <div class="expense-detail">
+                            <h3>Sofa Set</h3>
+                            <p>June 10, 2023</p>
+                        </div>
+                        <div class="expense-amount">$1,850</div>
+                    </div>
+                    <div class="expense-item">
+                        <div class="expense-detail">
+                            <h3>Paint Supplies</h3>
+                            <p>June 8, 2023</p>
+                        </div>
+                        <div class="expense-amount">$320</div>
+                    </div>
+                    <div class="expense-item">
+                        <div class="expense-detail">
+                            <h3>Electrician Deposit</h3>
+                            <p>June 5, 2023</p>
+                        </div>
+                        <div class="expense-amount">$500</div>
+                    </div>
+                    <div class="expense-item">
+                        <div class="expense-detail">
+                            <h3>Light Fixtures</h3>
+                            <p>June 3, 2023</p>
+                        </div>
+                        <div class="expense-amount">$450</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn">
+                            <i class="fas fa-plus"></i> Add Expense
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Contractor Contacts Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Contractor Contacts</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                    </div>
+                    <div class="contractor-item">
+                        <div class="contractor-avatar" style="background-color: #ffb74d;">
+                            JD
+                        </div>
+                        <div class="contractor-info">
+                            <h3>John Doe</h3>
+                            <p>Electrician</p>
+                            <div class="contractor-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span style="font-size: 0.8rem; color: #666; margin-left: 5px;">4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contractor-item">
+                        <div class="contractor-avatar" style="background-color: #4fc3f7;">
+                            MS
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Maria Smith</h3>
+                            <p>Interior Designer</p>
+                            <div class="contractor-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span style="font-size: 0.8rem; color: #666; margin-left: 5px;">5.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contractor-item">
+                        <div class="contractor-avatar" style="background-color: #81c784;">
+                            RJ
+                        </div>
+                        <div class="contractor-info">
+                            <h3>Robert Johnson</h3>
+                            <p>Painter</p>
+                            <div class="contractor-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span style="font-size: 0.8rem; color: #666; margin-left: 5px;">4.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn">
+                            <i class="fas fa-plus"></i> Add Contractor
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Features</a>
+                <a href="#">Pricing</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="copyright">&copy; 2023 DecorateMe. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
-
