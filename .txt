@@ -1,3 +1,6 @@
 terraform --version
 aws --version
 aws configure 
+terraform init
+terraform plan
+terraform apply
